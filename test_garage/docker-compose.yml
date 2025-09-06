@@ -1,0 +1,21 @@
+services:
+  garage:
+    image: dxflrs/garage:v1.0.1
+    container_name: garage_test
+    restart: unless-stopped
+    environment:
+      GARAGE_ROOT_USER: admin
+      GARAGE_ROOT_PASSWORD: secret123
+    ports:
+      - "3900:3900" # API endpoint
+      - "3901:3901" # S3-compatible endpoint
+    volumes:
+      - ./garage-data:/data
+    networks:
+      - movie-network
+
+networks:
+  movie-network:
+
+volumes:
+  garage-data:

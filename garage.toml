@@ -1,0 +1,13 @@
+# garage.toml
+metadata_dir = "/var/lib/garage/meta"
+data_dir = "/var/lib/garage/data"
+rpc_bind_addr = "0.0.0.0:3901"
+rpc_secret = "super-secret-key"
+
+[s3_api]
+s3_region = "garage"
+s3_hostname = "localhost"
+api_bind_addr = "0.0.0.0:3900"
+
+[admin]
+api_bind_addr = "0.0.0.0:3902"
