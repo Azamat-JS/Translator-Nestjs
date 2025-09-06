@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
+import { AcceptLanguageResolver, CookieResolver, HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import { join } from 'path';
 
 @Module({
   imports: [
     I18nModule.forRoot({
-      fallbackLanguage: 'nl',
+      fallbackLanguage: 'en',
       loaderOptions: {
         path: join(__dirname, '/i18n/'),
         watch: true,
@@ -16,6 +16,7 @@ import { join } from 'path';
         { use: QueryResolver, options: ['lang'] },
         AcceptLanguageResolver,
         new HeaderResolver(['x-lang']),
+        new CookieResolver(['lang']),
       ],
     }),
   ],
