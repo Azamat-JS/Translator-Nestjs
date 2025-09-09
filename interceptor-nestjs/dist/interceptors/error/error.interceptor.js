@@ -13,7 +13,7 @@ let ErrorInterceptor = class ErrorInterceptor {
     intercept(context, next) {
         return next
             .handle()
-            .pipe((0, rxjs_1.catchError)((err) => (0, rxjs_1.throwError)(() => new common_1.BadRequestException("something went wrong"))));
+            .pipe((0, rxjs_1.catchError)((err) => (0, rxjs_1.throwError)(() => new common_1.NotFoundException("User not found"))));
     }
 };
 exports.ErrorInterceptor = ErrorInterceptor;

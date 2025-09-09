@@ -1,9 +1,9 @@
 import {
-  BadRequestException,
   CallHandler,
   ExecutionContext,
   Injectable,
   NestInterceptor,
+  NotFoundException,
 } from "@nestjs/common";
 import { catchError, Observable, pipe, throwError } from "rxjs";
 
@@ -14,7 +14,7 @@ export class ErrorInterceptor implements NestInterceptor {
       .handle()
       .pipe(
         catchError((err) =>
-          throwError(() => new BadRequestException("something went wrong"))
+          throwError(() => new NotFoundException("User not found"))
         )
       );
   }
