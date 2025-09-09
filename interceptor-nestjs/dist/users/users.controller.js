@@ -14,18 +14,27 @@ const common_1 = require("@nestjs/common");
 const logger_interceptor_1 = require("../interceptors/logger/logger.interceptor");
 let UsersController = class UsersController {
     getAll() {
-        return [{ id: 1, name: 'John' }, { id: 2, name: "" }];
+        return [{ id: 1, name: 'John' }, { id: 2, name: "Alex" }];
+    }
+    createUser() {
+        return 'This creates a user';
     }
 };
 exports.UsersController = UsersController;
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.UseInterceptors)(logger_interceptor_1.LoggerInterceptor),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "getAll", null);
+__decorate([
+    (0, common_1.Post)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "createUser", null);
 exports.UsersController = UsersController = __decorate([
-    (0, common_1.Controller)('users'),
-    (0, common_1.UseInterceptors)(logger_interceptor_1.LoggerInterceptor)
+    (0, common_1.Controller)('users')
 ], UsersController);
 //# sourceMappingURL=users.controller.js.map

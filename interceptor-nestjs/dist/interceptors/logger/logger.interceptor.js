@@ -13,7 +13,7 @@ let LoggerInterceptor = class LoggerInterceptor {
     intercept(context, next) {
         console.log('Request started...');
         const start = Date.now();
-        return next.handle().pipe((0, rxjs_1.tap)(() => console.log(`Request  completed in ${Date.now() - start}ms`)));
+        return next.handle().pipe((0, rxjs_1.tap)((data) => console.log(`Request  completed in ${Date.now() - start}ms, ${JSON.stringify(data)}`)));
     }
 };
 exports.LoggerInterceptor = LoggerInterceptor;
