@@ -11,25 +11,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
-const logger_interceptor_1 = require("../interceptors/logger/logger.interceptor");
+const error_interceptor_1 = require("../interceptors/error/error.interceptor");
 let UsersController = class UsersController {
     getAll() {
         return [{ id: 1, name: 'John' }, { id: 2, name: "Alex" }];
     }
     createUser() {
-        return 'This creates a user';
+        throw new Error('simple error');
     }
 };
 exports.UsersController = UsersController;
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseInterceptors)(logger_interceptor_1.LoggerInterceptor),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "getAll", null);
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UseInterceptors)(error_interceptor_1.ErrorInterceptor),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)

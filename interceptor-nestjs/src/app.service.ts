@@ -1,10 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Injectable } from "@nestjs/common";
+import { map, Observable, of, tap } from "rxjs";
 
 @Injectable()
 export class AppService {
   getHello(): string {
-
     // const myObservable = new Observable<number>(observer=>{
     //   observer.next(1);
     //   observer.next(2);
@@ -12,6 +11,13 @@ export class AppService {
     // });
 
     // myObservable.subscribe((value) => console.log(value))
-    return 'Hello World!';
+    of(1, 2, 3)
+      .pipe(
+        tap((value) => console.log(`before: ${value}`)),
+        map((value) => value * 10),
+        tap((value) => console.log(`after: ${value}`))
+      )
+      .subscribe();
+    return "Hello World!";
   }
 }

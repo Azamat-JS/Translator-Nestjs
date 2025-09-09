@@ -6,19 +6,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppService = void 0;
+exports.ErrorInterceptor = void 0;
 const common_1 = require("@nestjs/common");
 const rxjs_1 = require("rxjs");
-let AppService = class AppService {
-    getHello() {
-        (0, rxjs_1.of)(1, 2, 3)
-            .pipe((0, rxjs_1.tap)((value) => console.log(`before: ${value}`)), (0, rxjs_1.map)((value) => value * 10), (0, rxjs_1.tap)((value) => console.log(`after: ${value}`)))
-            .subscribe();
-        return "Hello World!";
+let ErrorInterceptor = class ErrorInterceptor {
+    intercept(context, next) {
+        return next
+            .handle()
+            .pipe((0, rxjs_1.catchError)((err) => (0, rxjs_1.throwError)(() => new common_1.BadRequestException("something went wrong"))));
     }
 };
-exports.AppService = AppService;
-exports.AppService = AppService = __decorate([
+exports.ErrorInterceptor = ErrorInterceptor;
+exports.ErrorInterceptor = ErrorInterceptor = __decorate([
     (0, common_1.Injectable)()
-], AppService);
-//# sourceMappingURL=app.service.js.map
+], ErrorInterceptor);
+//# sourceMappingURL=error.interceptor.js.map
