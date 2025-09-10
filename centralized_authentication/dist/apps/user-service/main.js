@@ -2,9 +2,9 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./apps/auth-service/src/auth-service.controller.ts":
+/***/ "./apps/user-service/src/user-service.controller.ts":
 /*!**********************************************************!*\
-  !*** ./apps/auth-service/src/auth-service.controller.ts ***!
+  !*** ./apps/user-service/src/user-service.controller.ts ***!
   \**********************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
@@ -23,49 +23,38 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.AuthServiceController = void 0;
+exports.UserServiceController = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const auth_service_service_1 = __webpack_require__(/*! ./auth-service.service */ "./apps/auth-service/src/auth-service.service.ts");
+const user_service_service_1 = __webpack_require__(/*! ./user-service.service */ "./apps/user-service/src/user-service.service.ts");
 const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
-let AuthServiceController = class AuthServiceController {
-    authServiceService;
-    constructor(authServiceService) {
-        this.authServiceService = authServiceService;
+let UserServiceController = class UserServiceController {
+    userServiceService;
+    constructor(userServiceService) {
+        this.userServiceService = userServiceService;
     }
-    async login(credential) {
-        console.log(credential);
-        return this.authServiceService.login(credential);
-    }
-    async validateToken(token) {
-        return this.authServiceService.validateToken(token);
+    getUserProfile(userId) {
+        return this.userServiceService.getUserProfile(userId);
     }
 };
-exports.AuthServiceController = AuthServiceController;
+exports.UserServiceController = UserServiceController;
 __decorate([
-    (0, microservices_1.MessagePattern)('auth-login'),
-    __param(0, (0, microservices_1.Payload)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AuthServiceController.prototype, "login", null);
-__decorate([
-    (0, microservices_1.MessagePattern)('validate-token'),
+    (0, microservices_1.MessagePattern)('get-user-profile'),
     __param(0, (0, microservices_1.Payload)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], AuthServiceController.prototype, "validateToken", null);
-exports.AuthServiceController = AuthServiceController = __decorate([
+    __metadata("design:returntype", void 0)
+], UserServiceController.prototype, "getUserProfile", null);
+exports.UserServiceController = UserServiceController = __decorate([
     (0, common_1.Controller)(),
-    __metadata("design:paramtypes", [typeof (_a = typeof auth_service_service_1.AuthServiceService !== "undefined" && auth_service_service_1.AuthServiceService) === "function" ? _a : Object])
-], AuthServiceController);
+    __metadata("design:paramtypes", [typeof (_a = typeof user_service_service_1.UserServiceService !== "undefined" && user_service_service_1.UserServiceService) === "function" ? _a : Object])
+], UserServiceController);
 
 
 /***/ }),
 
-/***/ "./apps/auth-service/src/auth-service.module.ts":
+/***/ "./apps/user-service/src/user-service.module.ts":
 /*!******************************************************!*\
-  !*** ./apps/auth-service/src/auth-service.module.ts ***!
+  !*** ./apps/user-service/src/user-service.module.ts ***!
   \******************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
@@ -77,37 +66,37 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.AuthServiceModule = void 0;
+exports.UserServiceModule = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const auth_service_controller_1 = __webpack_require__(/*! ./auth-service.controller */ "./apps/auth-service/src/auth-service.controller.ts");
-const auth_service_service_1 = __webpack_require__(/*! ./auth-service.service */ "./apps/auth-service/src/auth-service.service.ts");
+const user_service_controller_1 = __webpack_require__(/*! ./user-service.controller */ "./apps/user-service/src/user-service.controller.ts");
+const user_service_service_1 = __webpack_require__(/*! ./user-service.service */ "./apps/user-service/src/user-service.service.ts");
 const jwt_1 = __webpack_require__(/*! @nestjs/jwt */ "@nestjs/jwt");
 const config_1 = __webpack_require__(/*! @nestjs/config */ "@nestjs/config");
-let AuthServiceModule = class AuthServiceModule {
+let UserServiceModule = class UserServiceModule {
 };
-exports.AuthServiceModule = AuthServiceModule;
-exports.AuthServiceModule = AuthServiceModule = __decorate([
+exports.UserServiceModule = UserServiceModule;
+exports.UserServiceModule = UserServiceModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot({ envFilePath: ".env", isGlobal: true }),
             jwt_1.JwtModule.register({
                 secret: process.env.JWT_SECRET,
                 signOptions: {
-                    expiresIn: '1d'
-                }
-            })
+                    expiresIn: "1d",
+                },
+            }),
         ],
-        controllers: [auth_service_controller_1.AuthServiceController],
-        providers: [auth_service_service_1.AuthServiceService],
+        controllers: [user_service_controller_1.UserServiceController],
+        providers: [user_service_service_1.UserServiceService],
     })
-], AuthServiceModule);
+], UserServiceModule);
 
 
 /***/ }),
 
-/***/ "./apps/auth-service/src/auth-service.service.ts":
+/***/ "./apps/user-service/src/user-service.service.ts":
 /*!*******************************************************!*\
-  !*** ./apps/auth-service/src/auth-service.service.ts ***!
+  !*** ./apps/user-service/src/user-service.service.ts ***!
   \*******************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
@@ -118,42 +107,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.AuthServiceService = void 0;
+exports.UserServiceService = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const jwt_1 = __webpack_require__(/*! @nestjs/jwt */ "@nestjs/jwt");
-let AuthServiceService = class AuthServiceService {
-    jwtService;
-    constructor(jwtService) {
-        this.jwtService = jwtService;
-    }
-    async login(credential) {
-        if (credential.username === 'admin' && credential.password === 'password') {
-            const payload = { sub: '123', username: credential.username, role: 'admin' };
-            const token = this.jwtService.sign(payload);
-            return { token };
+let UserServiceService = class UserServiceService {
+    users = [
+        {
+            id: '123',
+            name: "John Doe"
         }
-        throw new common_1.UnauthorizedException('Invalid credentials');
-    }
-    async validateToken(token) {
-        try {
-            const decoded = this.jwtService.verify(token);
-            return { valid: true, userId: decoded.sub, role: decoded.role };
-        }
-        catch (error) {
-            return { valid: false, userId: null, role: null };
-        }
+    ];
+    getUserProfile(userId) {
+        return this.users.find((u) => u.id === userId) || null;
     }
 };
-exports.AuthServiceService = AuthServiceService;
-exports.AuthServiceService = AuthServiceService = __decorate([
-    (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [typeof (_a = typeof jwt_1.JwtService !== "undefined" && jwt_1.JwtService) === "function" ? _a : Object])
-], AuthServiceService);
+exports.UserServiceService = UserServiceService;
+exports.UserServiceService = UserServiceService = __decorate([
+    (0, common_1.Injectable)()
+], UserServiceService);
 
 
 /***/ }),
@@ -240,24 +211,24 @@ var __webpack_exports__ = {};
 (() => {
 var exports = __webpack_exports__;
 /*!***************************************!*\
-  !*** ./apps/auth-service/src/main.ts ***!
+  !*** ./apps/user-service/src/main.ts ***!
   \***************************************/
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __webpack_require__(/*! @nestjs/core */ "@nestjs/core");
-const auth_service_module_1 = __webpack_require__(/*! ./auth-service.module */ "./apps/auth-service/src/auth-service.module.ts");
+const user_service_module_1 = __webpack_require__(/*! ./user-service.module */ "./apps/user-service/src/user-service.module.ts");
 const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 async function bootstrap() {
-    const app = await core_1.NestFactory.createMicroservice(auth_service_module_1.AuthServiceModule, {
+    const app = await core_1.NestFactory.createMicroservice(user_service_module_1.UserServiceModule, {
         transport: microservices_1.Transport.TCP,
         options: {
             host: "127.0.0.1",
-            port: 8877
+            port: 8878
         }
     });
     await app.listen();
-    common_1.Logger.log('Auth service is running on port: 8877');
+    common_1.Logger.log('Auth service is running on port: 8878');
 }
 bootstrap();
 

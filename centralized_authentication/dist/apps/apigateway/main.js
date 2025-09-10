@@ -79,6 +79,7 @@ const app_controller_1 = __webpack_require__(/*! ./app.controller */ "./apps/api
 const app_service_1 = __webpack_require__(/*! ./app.service */ "./apps/apigateway/src/app.service.ts");
 const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
 const config_1 = __webpack_require__(/*! @nestjs/config */ "@nestjs/config");
+const user_controller_1 = __webpack_require__(/*! ./user/user.controller */ "./apps/apigateway/src/user/user.controller.ts");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -94,10 +95,18 @@ exports.AppModule = AppModule = __decorate([
                         host: "127.0.0.1",
                         port: 8877
                     }
+                },
+                {
+                    name: "USER-SERVICE",
+                    transport: microservices_1.Transport.TCP,
+                    options: {
+                        host: "127.0.0.1",
+                        port: 8878
+                    }
                 }
             ])
         ],
-        controllers: [app_controller_1.AppController],
+        controllers: [app_controller_1.AppController, user_controller_1.UserController],
         providers: [app_service_1.AppService],
     })
 ], AppModule);
@@ -130,6 +139,114 @@ exports.AppService = AppService;
 exports.AppService = AppService = __decorate([
     (0, common_1.Injectable)()
 ], AppService);
+
+
+/***/ }),
+
+/***/ "./apps/apigateway/src/guards/auth.guard.ts":
+/*!**************************************************!*\
+  !*** ./apps/apigateway/src/guards/auth.guard.ts ***!
+  \**************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AuthGuard = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
+const rxjs_1 = __webpack_require__(/*! rxjs */ "rxjs");
+let AuthGuard = class AuthGuard {
+    authClient;
+    constructor(authClient) {
+        this.authClient = authClient;
+    }
+    async canActivate(context) {
+        const req = context.switchToHttp().getRequest();
+        const authHeader = req.headers["authorization"];
+        if (!authHeader)
+            throw new common_1.UnauthorizedException("Missing token!");
+        const token = authHeader.split(" ")[1];
+        const result = await (0, rxjs_1.firstValueFrom)(this.authClient.send("validate-token", token));
+        if (!result.valid)
+            throw new common_1.UnauthorizedException("Invalid token!");
+        req.user = { userId: result.userId, role: result.role };
+        return true;
+    }
+};
+exports.AuthGuard = AuthGuard;
+exports.AuthGuard = AuthGuard = __decorate([
+    (0, common_1.Injectable)(),
+    __param(0, (0, common_1.Inject)("AUTH-SERVICE")),
+    __metadata("design:paramtypes", [typeof (_a = typeof microservices_1.ClientProxy !== "undefined" && microservices_1.ClientProxy) === "function" ? _a : Object])
+], AuthGuard);
+
+
+/***/ }),
+
+/***/ "./apps/apigateway/src/user/user.controller.ts":
+/*!*****************************************************!*\
+  !*** ./apps/apigateway/src/user/user.controller.ts ***!
+  \*****************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UserController = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
+const rxjs_1 = __webpack_require__(/*! rxjs */ "rxjs");
+const auth_guard_1 = __webpack_require__(/*! ../guards/auth.guard */ "./apps/apigateway/src/guards/auth.guard.ts");
+let UserController = class UserController {
+    userClient;
+    constructor(userClient) {
+        this.userClient = userClient;
+    }
+    async getUserProfile(req) {
+        const userId = req.user.userId;
+        const user$ = this.userClient.send('get-user-profile', userId);
+        return await (0, rxjs_1.firstValueFrom)(user$);
+    }
+};
+exports.UserController = UserController;
+__decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    (0, common_1.Get)('user'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getUserProfile", null);
+exports.UserController = UserController = __decorate([
+    (0, common_1.Controller)(),
+    __param(0, (0, common_1.Inject)('USER-SERVICE')),
+    __metadata("design:paramtypes", [typeof (_a = typeof microservices_1.ClientProxy !== "undefined" && microservices_1.ClientProxy) === "function" ? _a : Object])
+], UserController);
 
 
 /***/ }),

@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule } from '@nestjs/config';
+import { UserController } from './user/user.controller';
 
 @Module({
   imports: [
@@ -15,9 +16,17 @@ import { ConfigModule } from '@nestjs/config';
         host: "127.0.0.1",
         port: 8877
       }
+    },
+    {
+      name: "USER-SERVICE",
+      transport: Transport.TCP,
+      options:{
+        host: "127.0.0.1",
+        port: 8878
+      }
     }
   ])],
-  controllers: [AppController],
+  controllers: [AppController, UserController],
   providers: [AppService],
 })
 export class AppModule {}

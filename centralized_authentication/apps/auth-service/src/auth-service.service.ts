@@ -12,4 +12,13 @@ constructor(private jwtService: JwtService){}
     }
     throw new UnauthorizedException('Invalid credentials')
   }
+
+  async validateToken(token:string){
+    try {
+      const decoded = this.jwtService.verify(token)
+      return {valid: true, userId: decoded.sub, role: decoded.role}
+    } catch (error) {
+      return {valid:false, userId: null, role: null};
+    }
+  }
 }

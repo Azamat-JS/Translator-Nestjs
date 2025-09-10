@@ -10,4 +10,9 @@ export class AuthServiceController {
  async login(@Payload() credential: {username:string, password: string}){
   return this.authServiceService.login(credential)
  }
+
+ @MessagePattern('validate-token')
+ async validateToken(@Payload() token: string){
+  return this.authServiceService.validateToken(token);
+ }
 }
