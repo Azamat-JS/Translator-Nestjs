@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  NotFoundException,
   Param,
   Post,
   UseInterceptors,
@@ -22,7 +21,7 @@ export class UsersController {
   getAll() {
     return users;
   }
-  
+
   @Get(":id")
   @UseInterceptors(TransformInterceptor, ErrorInterceptor)
   async getOne(@Param("id") id: string) {
