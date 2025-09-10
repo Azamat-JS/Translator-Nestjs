@@ -1,14 +1,14 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/apigeteway/src",
+  "sourceRoot": "apps/apigateway/src",
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/apigeteway/tsconfig.app.json"
+    "tsConfigPath": "apps/apigateway/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/apigeteway",
+  "root": "apps/apigateway",
   "projects": {
     "auth-service": {
       "type": "application",
@@ -19,13 +19,13 @@
         "tsConfigPath": "apps/auth-service/tsconfig.app.json"
       }
     },
-    "apigeteway": {
+    "apigateway": {
       "type": "application",
-      "root": "apps/apigeteway",
+      "root": "apps/apigateway",
       "entryFile": "main",
-      "sourceRoot": "apps/apigeteway/src",
+      "sourceRoot": "apps/apigateway/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/apigeteway/tsconfig.app.json"
+        "tsConfigPath": "apps/apigateway/tsconfig.app.json"
       }
     }
   }
