@@ -9,11 +9,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ErrorInterceptor = void 0;
 const common_1 = require("@nestjs/common");
 const rxjs_1 = require("rxjs");
+const common_2 = require("@nestjs/common");
 let ErrorInterceptor = class ErrorInterceptor {
     intercept(context, next) {
-        return next
-            .handle()
-            .pipe((0, rxjs_1.catchError)((err) => (0, rxjs_1.throwError)(() => new common_1.NotFoundException("User not found"))));
+        return next.handle().pipe((0, rxjs_1.catchError)((err) => {
+            let status = 500;
+            let message = 'Internal server error';
+            if (err instanceof common_2.HttpException) {
+                status = err.getStatus();
+                const response = err.getResponse();
+                message = typeof response === 'string' ? response : response.message;
+            }
+            return (0, rxjs_1.of)({
+                success: false,
+                statusCode: status,
+                message,
+            });
+        }));
     }
 };
 exports.ErrorInterceptor = ErrorInterceptor;

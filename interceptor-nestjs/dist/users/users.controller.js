@@ -14,8 +14,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
-const error_interceptor_1 = require("../interceptors/error/error.interceptor");
-const transform_interceptor_1 = require("../interceptors/transform/transform.interceptor");
 const users = [
     { id: 1, name: "John" },
     { id: 2, name: "Alex" },
@@ -31,33 +29,21 @@ let UsersController = class UsersController {
             throw new Error();
         return foundUser;
     }
-    createUser() {
-        throw new Error("simple error");
-    }
 };
 exports.UsersController = UsersController;
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseInterceptors)(transform_interceptor_1.TransformInterceptor),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "getAll", null);
 __decorate([
     (0, common_1.Get)(":id"),
-    (0, common_1.UseInterceptors)(transform_interceptor_1.TransformInterceptor, error_interceptor_1.ErrorInterceptor),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getOne", null);
-__decorate([
-    (0, common_1.Post)(),
-    (0, common_1.UseInterceptors)(error_interceptor_1.ErrorInterceptor),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], UsersController.prototype, "createUser", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)("users")
 ], UsersController);

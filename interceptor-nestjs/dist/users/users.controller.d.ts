@@ -7,5 +7,4 @@ export declare class UsersController {
         id: number;
         name: string;
     }>;
-    createUser(): void;
 }
