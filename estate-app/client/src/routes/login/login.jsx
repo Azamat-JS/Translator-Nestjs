@@ -26,9 +26,8 @@ function Login() {
         username,
         password,
       });
-
+      localStorage.setItem("user", JSON.stringify(res.data))
       updateUser(res.data)
-
       navigate("/");
     } catch (err) {
       setError(err.response.data.message);

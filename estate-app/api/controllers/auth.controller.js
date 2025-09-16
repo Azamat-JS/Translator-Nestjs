@@ -34,12 +34,13 @@ try {
    if(!isPasswordValid) return res.status(401).json({message: 'Invalid credentials!'});
    const token = jwt.sign({
       id: user.id,
-   }, process.env.JWT_SECRET_KEY, {expiresIn: age})
+   }, process.env.JWT_SECRET_KEY, {expiresIn: age});
+   const {password: userPassword, ...userInfo} = user
 res.cookie('token', token, {
    httpOnly: true,
    // secure: true,
    maxAge: age,
-}).status(200).json({message: 'Login successful'})
+}).status(200).json(userInfo)
 } catch (error) {
    console.log(error);
    res.status(500).json({message: 'Failed to login!'})
