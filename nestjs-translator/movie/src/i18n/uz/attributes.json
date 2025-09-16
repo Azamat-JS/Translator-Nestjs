@@ -1,0 +1,14 @@
+{
+    "actor": "Aktor",
+    "director": "Direktor",
+    "producer": "Prodyuser",
+    "episode": "Epizod",
+    "subscription": "Obuna",
+    "title": "Kino",
+    "trailer": "Treyler",
+    "film_duration": "Film duration",
+    "promo_code": "Promo kod",
+    "token": "Token",
+    "resource": "Manba",
+    "comment": "Izoh"
+}

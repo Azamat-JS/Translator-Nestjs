@@ -1,0 +1,15 @@
+{
+
+"actor": "Актер",
+"director": "Режиссёр",
+"producer": "Продюсер",
+"episode": "Эпизод",
+"subscription": "Подписка",
+"title": "Фильм",
+"trailer": "Трейлер",
+"film_duration": "Длительность фильма",
+"promo_code": "Промо-код",
+"token": "Токен",
+"resource": "Ресурс",
+"comment": "Комментарий"
+}

@@ -1,0 +1,10 @@
+{
+  "not_found": "{name} не найден!",
+  "invalid": "{name} недействителен!",
+  "not_related": "{name} не принадлежит вам!",
+  "required": "{name} обязательно!",
+  "not_required": "{name} недопустимо!",
+  "server_error": "Что-то пошло не так, попробуйте позже!",
+  "available": "Этот {name} уже доступен!",
+  "watching_duration_limited": "Просмотренное время не может превышать длительность фильма!"
+}

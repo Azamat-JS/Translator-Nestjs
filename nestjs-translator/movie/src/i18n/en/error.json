@@ -1,0 +1,11 @@
+{
+  "not_found": "{name} not found!",
+  "not_determined": "{name} not determined!",
+  "not_related": "{name} does not belong to you!",
+  "invalid": "{name} is invalid!",
+  "required": "{name} is required!",
+  "not_required": "{name} is not accepted!",
+  "server_error": "Something went wrong please try later!",
+  "available": "This {name} is already available!",
+  "watching_duration_limited": "Watched seconds cannot be greater than duration!"
+}

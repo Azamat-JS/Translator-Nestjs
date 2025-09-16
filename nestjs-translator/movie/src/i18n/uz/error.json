@@ -1,0 +1,11 @@
+{
+  "not_found": "{name} topilmadi!",
+  "not_determined": "{name} aniqlanmadi!",
+  "not_related": "{name} sizga tegishli emas!",
+  "invalid": "Bu {name} yaroqsiz!",
+  "required": "{name} talab qilinadi!",
+  "not_required": "{name} qabul qilinmaydi",
+  "server_error": "Xatolik yuz berdi iltimos keyinroq qayta urinib ko'ring!",
+  "available": "Bunday {name} allaqachon mavjud!",
+  "watching_duration_limited": "Ko'rilgan vaqt miqdori film davomiyligidan ko'p bo'lmasligi kerak!"
+}

@@ -1,0 +1,14 @@
+{
+  "actor": "Actor",
+  "director": "Director",
+  "producer": "Producer",
+  "episode": "Episode",
+  "subscription": "Subscription",
+  "title": "Movie",
+  "trailer": "Trailer",
+  "film_duration": "Film duration",
+  "promo_code": "Promo code",
+  "token": "Token",
+  "resource": "Resource",
+  "comment": "Comment"
+}

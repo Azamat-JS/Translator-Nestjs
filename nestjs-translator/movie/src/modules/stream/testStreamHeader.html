@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>HLS.js Streaming with HMAC</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+<h2>HLS.js Player with HMAC Header Auth</h2>
+
+<input type="text" id="streamUrl" placeholder="Enter full .m3u8 URL" style="width: 500px;" />
+<br><br>
+
+<input type="text" id="salt" placeholder="Enter salt (shared secret)" style="width: 250px;" />
+<br><br>
+
+<input type="text" id="tokenInput" placeholder="Enter Bearer token (optional)" style="width: 500px;" />
+<br><br>
+
+<button onclick="loadStream()">Load Stream</button>
+
+<br><br>
+<video id="video" controls style="width: 640px; height: 360px;"></video>
+
+<br><br>
+<label for="audioTracks">Audio Tracks:</label>
+<select id="audioTracks" onchange="switchAudioTrack()"></select>
+
+&nbsp;&nbsp;
+
+<label for="qualityLevels">Video Quality:</label>
+<select id="qualityLevels" onchange="switchQuality()">
+  <option value="-1">Auto</option>
+</select>
+
+<script>
+  let hls;
+  const video = document.getElementById('video');
+  const audioSelect = document.getElementById('audioTracks');
+  const qualitySelect = document.getElementById('qualityLevels');
+
+  let sharedSalt = '';
+  let sharedBearer = '';
+  let baseId = '';
+
+  function extractId(url) {
+    const parts = url.split('/');
+    return parts.find(p => /^[0-9a-fA-F\-]{36}$/.test(p)) || '';
+  }
+
+  function extractSegment(url, id) {
+    const index = url.indexOf(id);
+    if (index === -1) return '';
+    return url.substring(index + id.length + 1); // id dan keyingi segment to‘liq path
+  }
+
+  function generateHmac(id, segment, salt) {
+    const message = `${id}${segment}`;
+    const hash = CryptoJS.HmacSHA256(message, salt);
+    const hex = hash.toString(CryptoJS.enc.Hex);
+    console.log(`[HMAC] message: ${message} | hash: ${hex}`);
+    return hex;
+  }
+
+  function loadStream() {
+    const baseUrl = document.getElementById('streamUrl').value.trim();
+    sharedSalt = document.getElementById('salt').value.trim();
+    sharedBearer = document.getElementById('tokenInput').value.trim();
+
+    if (!baseUrl || !sharedSalt) {
+      alert('Please enter stream URL and salt.');
+      return;
+    }
+
+    baseId = extractId(baseUrl);
+    if (!baseId) {
+      alert('Could not extract ID from URL.');
+      return;
+    }
+
+    if (hls) {
+      hls.destroy();
+    }
+
+    if (Hls.isSupported()) {
+      hls = new Hls({
+        xhrSetup: function (xhr, url) {
+          const segment = extractSegment(url, baseId);
+          const hash = generateHmac(baseId, segment, sharedSalt);
+          xhr.setRequestHeader('x-check', hash);
+          if (sharedBearer) {
+            xhr.setRequestHeader('Authorization', 'Bearer ' + sharedBearer);
+          }
+
+          console.log(`[XHR] ${url}`);
+          console.log(`[Header] x-check: ${hash}`);
+        }
+      });
+
+      hls.loadSource(baseUrl);
+      hls.attachMedia(video);
+
+      hls.on(Hls.Events.MANIFEST_PARSED, function () {
+        video.play();
+
+        qualitySelect.innerHTML = '<option value="-1">Auto</option>';
+        hls.levels.forEach((level, index) => {
+          const option = document.createElement('option');
+          option.value = index;
+          option.text = `${level.height}p (${Math.round(level.bitrate / 1000)} kbps)`;
+          qualitySelect.appendChild(option);
+        });
+      });
+
+      hls.on(Hls.Events.AUDIO_TRACKS_UPDATED, function (event, data) {
+        audioSelect.innerHTML = '';
+        data.audioTracks.forEach((track, index) => {
+          const option = document.createElement('option');
+          option.value = index;
+          option.text = track.name || track.lang || `Track ${index}`;
+          audioSelect.appendChild(option);
+        });
+      });
+
+      hls.on(Hls.Events.ERROR, function (event, data) {
+        console.error('HLS.js Error:', data);
+        alert('HLS.js Error: ' + data.details);
+      });
+
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = baseUrl;
+      video.addEventListener('loadedmetadata', () => {
+        video.play();
+      });
+    } else {
+      alert('HLS is not supported in this browser.');
+    }
+  }
+
+  function switchAudioTrack() {
+    const selectedIndex = parseInt(audioSelect.value);
+    if (hls && !isNaN(selectedIndex)) {
+      hls.audioTrack = selectedIndex;
+    }
+  }
+
+  function switchQuality() {
+    const selectedIndex = parseInt(qualitySelect.value);
+    if (hls && !isNaN(selectedIndex)) {
+      hls.currentLevel = selectedIndex;
+    }
+  }
+</script>
+</body>
+</html>
