@@ -34,6 +34,7 @@ try {
    if(!isPasswordValid) return res.status(401).json({message: 'Invalid credentials!'});
    const token = jwt.sign({
       id: user.id,
+      isAdmin: true,
    }, process.env.JWT_SECRET_KEY, {expiresIn: age});
    const {password: userPassword, ...userInfo} = user
 res.cookie('token', token, {

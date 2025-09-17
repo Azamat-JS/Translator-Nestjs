@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cookieParser())
 app.use('/api/auth', authRouter);
 app.use('/api/posts', postRouter);
-app.use('/api/test', postRouter);
+app.use('/api/test', testRouter);
 app.listen(8800, () => {
     console.log('Server is running')
 })
