@@ -21,25 +21,40 @@ model User {
   password  String
   avatar    String?
   createdAt DateTime @default(now())
-  posts Post[]
+  posts     Post[]
 }
 
 model Post {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  title     String
-  price     Int
-  img  String
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  price      Int
+  images     String[]
   address    String
-  city    String
+  city       String
   bedroom    Int
-  bathroom    Int
-  latitude    String
-  longtitude    String
-  type Type
-  property Property
-  createdAt DateTime @default(now())
-  user User @relation(fields: [userId], references: [id])
-  userId String @db.ObjectId
+  bathroom   Int
+  latitude   String
+  longtitude String
+  type       Type
+  property   Property
+  createdAt  DateTime    @default(now())
+  user       User        @relation(fields: [userId], references: [id])
+  userId     String      @db.ObjectId
+  postDetail PostDetail?
+}
+
+model PostDetail {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  desc       String
+  utilities  String?
+  pet        String?
+  income     String?
+  size       Int?
+  school     Int?
+  bus        Int?
+  restaurant Int?
+  post       Post    @relation(fields: [postId], references: [id])
+  postId     String  @unique @db.ObjectId
 }
 
 enum Type {
