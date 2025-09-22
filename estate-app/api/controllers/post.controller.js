@@ -56,13 +56,13 @@ export const getPost = async (req, res) => {
               },
             },
           });
-          return res.status(200).json({ ...post, isSaved: !!saved }); // ✅ return here
+          return res.status(200).json({ ...post, isSaved: !!saved });
         } else {
-          return res.status(200).json({ ...post, isSaved: false }); // ✅ also return here
+          return res.status(200).json({ ...post, isSaved: false }); 
         }
       });
     } else {
-      return res.status(200).json({ ...post, isSaved: false }); // ✅ return here too
+      return res.status(200).json({ ...post, isSaved: false });
     }
   } catch (err) {
     console.log(err);
