@@ -98,11 +98,11 @@ function SinglePage() {
             </div>
             <div className="size">
               <img src="/bed.png" alt="" />
-              <span>{post.bedroom} beds</span>
+              <span>{post.bedroom} {`${post.bedroom < 2 ? "bed" : "beds"}`}</span>
             </div>
             <div className="size">
               <img src="/bath.png" alt="" />
-              <span>{post.bathroom} bathroom</span>
+              <span>{post.bathroom} {`${post.bathroom < 2 ? "bathroom" : "bathrooms"}`}</span>
             </div>
           </div>
           <p className="title">Nearby Places</p>

@@ -56,16 +56,20 @@ export const getPost = async (req, res) => {
               },
             },
           });
-          res.status(200).json({ ...post, isSaved: saved ? true : false });
+          return res.status(200).json({ ...post, isSaved: !!saved }); // ✅ return here
+        } else {
+          return res.status(200).json({ ...post, isSaved: false }); // ✅ also return here
         }
       });
+    } else {
+      return res.status(200).json({ ...post, isSaved: false }); // ✅ return here too
     }
-    res.status(200).json({ ...post, isSaved: false });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Failed to get post" });
   }
 };
+
 
 export const addPost = async (req, res) => {
   const body = req.body;

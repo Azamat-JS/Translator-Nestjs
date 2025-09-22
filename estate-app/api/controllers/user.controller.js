@@ -1,5 +1,6 @@
 import prisma from "../lib/prisma.js";
 import bcrypt from "bcryptjs";
+import { ObjectId } from 'mongodb';
 
 export const getUsers = async (req, res) => {
   try {
@@ -13,6 +14,11 @@ export const getUsers = async (req, res) => {
 
 export const getUser = async (req, res) => {
   const id = req.params.id;
+
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid user ID format" });
+  }
+
   try {
     const user = await prisma.user.findUnique({
       where: { id },
@@ -23,6 +29,7 @@ export const getUser = async (req, res) => {
     res.status(500).json({ message: "Failed to get user!" });
   }
 };
+
 
 export const updateUser = async (req, res) => {
   const id = req.params.id;
