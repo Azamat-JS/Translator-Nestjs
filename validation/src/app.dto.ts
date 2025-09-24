@@ -1,8 +1,8 @@
 import {Exclude, Expose} from 'class-transformer'
 
-@Exclude()
+
 export class DataValidatorDto {
-    @Expose({name: 'user_name'})
+    @Expose({name: 'user_name', toPlainOnly:true})
     userName: string;
 
     @Expose({name: 'email_address'})

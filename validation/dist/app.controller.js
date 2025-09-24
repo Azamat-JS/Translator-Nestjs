@@ -34,6 +34,7 @@ let AppController = class AppController {
     }
     create(data) {
         const info = (0, class_transformer_1.plainToInstance)(app_dto_1.DataValidatorDto, data, { excludeExtraneousValues: true });
+        console.log(info);
         return {
             user: info.userName,
             email: info.emailAddress,

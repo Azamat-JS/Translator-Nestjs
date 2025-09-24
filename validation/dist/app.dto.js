@@ -11,16 +11,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DataValidatorDto = void 0;
 const class_transformer_1 = require("class-transformer");
-let DataValidatorDto = class DataValidatorDto {
+class DataValidatorDto {
     userName;
     emailAddress;
     isMarried;
     internalSecret;
     externalSecret;
-};
+}
 exports.DataValidatorDto = DataValidatorDto;
 __decorate([
-    (0, class_transformer_1.Expose)({ name: 'user_name' }),
+    (0, class_transformer_1.Expose)({ name: 'user_name', toPlainOnly: true }),
     __metadata("design:type", String)
 ], DataValidatorDto.prototype, "userName", void 0);
 __decorate([
@@ -39,7 +39,4 @@ __decorate([
     (0, class_transformer_1.Exclude)(),
     __metadata("design:type", String)
 ], DataValidatorDto.prototype, "externalSecret", void 0);
-exports.DataValidatorDto = DataValidatorDto = __decorate([
-    (0, class_transformer_1.Exclude)()
-], DataValidatorDto);
 //# sourceMappingURL=app.dto.js.map

@@ -1,6 +1,9 @@
+import { createServer } from "http";
 import { Server } from "socket.io";
 
-const io = new Server({
+const httpServer = createServer();
+
+const io = new Server(httpServer, {
   cors: {
     origin: "http://localhost:5173",
   },
@@ -9,8 +12,8 @@ const io = new Server({
 let onlineUser = [];
 
 const addUser = (userId, socketId) => {
-  const userExits = onlineUser.find((user) => user.userId === userId);
-  if (!userExits) {
+  const userExists = onlineUser.find((user) => user.userId === userId);
+  if (!userExists) {
     onlineUser.push({ userId, socketId });
   }
 };

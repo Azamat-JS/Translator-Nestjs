@@ -23,6 +23,7 @@ export class AppController {
   @Post()
   create(@Body() data: any) {
   const info =  plainToInstance(DataValidatorDto, data, {excludeExtraneousValues:true})
+  console.log(info)
   return {
     user: info.userName,
     email: info.emailAddress,
